@@ -3,6 +3,17 @@ This document covers the high level development tasks to create similar function
 
 *Note: This project is separate from [hnsdomains](https://github.com/hnsdomains) which was a Harmony community lead project.*
 
+**Table of Contents**
+- [Harmony Name Service Design Document](#harmony-name-service-design-document)
+  - [Focus areas](#focus-areas)
+  - [Requirements](#requirements)
+  - [Technical Components](#technical-components)
+  - [Deployment Strategy](#deployment-strategy)
+  - [Additional Tasks](#additional-tasks)
+  - [Assumptions](#assumptions)
+  - [References](#references)
+    - [Websites](#websites)
+    - [ENS Github](#ens-github)
 
 ## Focus areas
 
