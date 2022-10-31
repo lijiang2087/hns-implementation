@@ -68,6 +68,12 @@ This document covers the high level development tasks to create similar function
   * medium
 
 
+## Assumptions
+1. We will create a separate github organization for this project [harmony-domains](https://github.com/harmony-domains)
+2. Relevant repositories will be copied (not forked) from [ensdomains](https://github.com/ensdomains)
+3. We will host his under the domain name https://harmony.domains
+4. Hosting Services will be under AWS and hosted by `modulo.so`
+5. Transtion plan to a Harmony Domains DAO will be created for ongoing support and maintenance of the project.
 
 ## References
 
