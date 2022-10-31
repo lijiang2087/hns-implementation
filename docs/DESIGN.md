@@ -40,8 +40,8 @@ This document covers the high level development tasks to create similar function
     * [ENS Offchain Resolver](https://github.com/ensdomains/offchain-resolver): smart contracts and a node.js gateway server that together allow hosting ENS names offchain using EIP 3668 and ENSIP 10.
     * [subdomain-registrar](https://github.com/ensdomains/subdomain-registrar): set of smart contracts and corresponding webapp that facilitates easy registration of ENS subdomains for users.
 * SDK
-    * [https://github.com/ensdomains/ensjs-v3](The ultimate ENS javascript library, with ethers.js under the hood.)
-    * [emsjs](https://github.com/ensdomains/ensjs): Prior version of ensjs
+    * [ensjs-v3](https://github.com/ensdomains/ensjs-v3): The ultimate ENS javascript library, with ethers.js under the hood.
+        * [emsjs](https://github.com/ensdomains/ensjs): Prior version of ensjs
 * API
     * [ens-avatar](https://github.com/ensdomains/ens-avatar): Avatar resolver library for both nodejs and browser.
         * [ens-avatar-worker](https://github.com/ensdomains/ens-avatar-worker): API [Cloudflare serverless worker](https://developers.cloudflare.com/workers/) for getting avataRs
@@ -106,7 +106,7 @@ This document covers the high level development tasks to create similar function
     * [ens](https://github.com/ensdomains/ens): Prior Version of Implementations for registrars and local resolvers for the Ethereum Name Service.
 * [ENS Offchain Resolver](https://github.com/ensdomains/offchain-resolver): smart contracts and a node.js gateway server that together allow hosting ENS names offchain using EIP 3668 and ENSIP 10.
 * [subdomain-registrar](https://github.com/ensdomains/subdomain-registrar): set of smart contracts and corresponding webapp that facilitates easy registration of ENS subdomains for users.
-* [https://github.com/ensdomains/ensjs-v3](The ultimate ENS javascript library, with ethers.js under the hood.)
+* [ensjs-v3](https://github.com/ensdomains/ensjs-v3): The ultimate ENS javascript library, with ethers.js under the hood.
     * [emsjs](https://github.com/ensdomains/ensjs): Prior version of ensjs
 * [ens-app-v3](https://github.com/ensdomains/ens-app-v3): The all new, all cool version of the ENS manager.
     * [ens-app](https://github.com/ensdomains/ens-app): Prior version of ENS Application
