@@ -9,6 +9,11 @@ This document covers the high level development tasks to create similar function
   - [Requirements](#requirements)
   - [Technical Components](#technical-components)
   - [Deployment Strategy](#deployment-strategy)
+    - [Prerequisites](#prerequisites)
+    - [Local Build](#local-build)
+    - [Customize Local Build for Harmony](#customize-local-build-for-harmony)
+    - [Local Deploy](#local-deploy)
+    - [Testnet Deploy](#testnet-deploy)
   - [Additional Tasks](#additional-tasks)
   - [Assumptions](#assumptions)
   - [References](#references)
@@ -38,6 +43,7 @@ This document covers the high level development tasks to create similar function
     * [ens-contracts](https://github.com/ensdomains/ens-contracts): This repo doubles as an npm package with the compiled JSON contracts
         * [ens](https://github.com/ensdomains/ens): Prior Version of Implementations for registrars and local resolvers for the Ethereum Name Service.
     * [ENS Offchain Resolver](https://github.com/ensdomains/offchain-resolver): smart contracts and a node.js gateway server that together allow hosting ENS names offchain using EIP 3668 and ENSIP 10.
+    * [l2gateway-demo](https://github.com/ensdomains/l2gateway-demo/): A demonstration and MVP of an Ethereum <-> Optimism bridge for resolving ENS names (see [medium article](https://medium.com/the-ethereum-name-service/mvp-of-ens-on-l2-with-optimism-demo-video-how-to-try-it-yourself-b44c390cbd67)). Not Needed for harmony-domains, but worth investegating if we want Harmony to effectively be an L2 for Ethereum ENS.
     * [subdomain-registrar](https://github.com/ensdomains/subdomain-registrar): set of smart contracts and corresponding webapp that facilitates easy registration of ENS subdomains for users.
 * SDK
     * [ensjs-v3](https://github.com/ensdomains/ensjs-v3): The ultimate ENS javascript library, with ethers.js under the hood.
@@ -51,6 +57,7 @@ This document covers the high level development tasks to create similar function
         * [ens-app](https://github.com/ensdomains/ens-app): Prior version of ENS Application
 * Reporting
     * [ens-subgraph](https://github.com/ensdomains/ens-subgraph): sources events from the ENS contracts.
+        * See also Harmony's support of [The Graph - Subgraphs](https://docs.harmony.one/home/developers/web3-foundations/tutorials/the-graph-subgraphs)
 * Documentation
     * [docs](https://github.com/ensdomains/docs): ens documentation   
 
@@ -58,17 +65,57 @@ This document covers the high level development tasks to create similar function
 
 *Note: See [Deploying ENS on a Private Chain](https://docs.ens.domains/deploying-ens-on-a-private-chain) as a starting point (modified version is in [DEPLOYMENT.md](./DEPLOYMENT.md)).*
 
-- [x] Set up Github Organization [harmony-name-service](https://github.com/harmony-name-service)
-- [ ] Regsiter Domain to support ENS e.g. [harmony.domains](https://harmony.domains)
-- [ ] Copy required repositories (not fork) from [ensdomains](https://github.com/ensdomains)
+### Prerequisites
+- [x] Set up Github Organization [harmony-domains](https://github.com/harmony-domains)
+- [x] Copy required repositories (not fork) from [ensdomains](https://github.com/ensdomains)
+- [ ] Setup Hosting accounts on AWS
+- [ ] Regsister Domain to support ENS e.g. [harmony.domains](https://harmony.domains)
+
+
+### Local Build
+
+- [x] Clone and build the following repositories
+    - [x] [ens-contracts](https://github.com/ensdomains/ens-contracts): This repo doubles as an npm package with the compiled JSON contracts 
+    - [x] [ens-app-v3](https://github.com/ensdomains/ens-app-v3): The all new, all cool version of the ENS manager. Dependencies Include when running `dev:nlocal`
+        - [ ] Local Node
+        - [ ] Avatar Uploader
+        - [ ] Graph Node
+        - [ ] OffChain Resolver
+
+### Customize Local Build for Harmony
+
 - [ ] Customize Repositories for Harmony
     - [ ] Address Format Customizations
     - [ ] `.country` customizations
     - [ ] document updates
-- [ ] Local Build and Deploy
-- [ ] Setup Hosting accounts on AWS
-- [ ] Testnet Deployment
-- [ ] Mainnet Deployment
+### Local Deploy
+
+*Note: Need to review the [ens-test-env](https://github.com/ensdomains/ensjs-v3/tree/main/packages/ens-test-env/) which uses docker. We may be able to run a local test environment by running components locally in terminal windows as below*
+
+```
+# Start Hardhat Locally (seperate terminal window)
+cd /Users/john/one-wallet/ens/ens-contracts
+npx hardhat node --no-deploy
+
+# Deploy Contracts locally (seperate terminal window)
+npx hardhat run scripts/harmony-deploy.js --network localhost
+
+# Start the Frontend (separate terminal window)
+cd /Users/john/one-wallet/ens/ens-app-v3
+
+# Runs Local node connected to Goerli (currently stalls when registering a name)
+pnpm dev
+
+# Runs local node with additional developer options under settings
+pnpm dev:nlocal
+
+
+# View the frontend at http://localhost:3000/
+
+
+```
+
+### Testnet Deploy
 
 ## Additional Tasks
 
