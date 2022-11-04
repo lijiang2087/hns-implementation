@@ -77,10 +77,11 @@ This document covers the high level development tasks to create similar function
 - [x] Clone and build the following repositories
     - [x] [ens-contracts](https://github.com/ensdomains/ens-contracts): This repo doubles as an npm package with the compiled JSON contracts 
     - [x] [ens-app-v3](https://github.com/ensdomains/ens-app-v3): The all new, all cool version of the ENS manager. Dependencies Include when running `dev:nlocal`
-        - [ ] Local Node
-        - [ ] Avatar Uploader
-        - [ ] Graph Node
-        - [ ] OffChain Resolver
+        - [ ] Local Node : `ganache -m "test test test test test test test test test test test junk"'`
+        - [ ] [Metadata Service](https://github.com/ensdomains/ens-metadata-service): [docs](https://metadata.ens.domains/docs)
+        - [ ] Avatar Uploader: [ens-avatar-worker](https://github.com/ensdomains/ens-avatar-worker)
+        - [ ] [ens-subgraph](https://github.com/ensdomains/ens-subgraph)
+        - [ ] [offChain-resolver](https://github.com/ensdomains/offchain-resolver)
 
 ### Customize Local Build for Harmony
 
