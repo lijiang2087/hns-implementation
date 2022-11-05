@@ -93,13 +93,21 @@ This document covers the high level development tasks to create similar function
 
 *Note: Need to review the [ens-test-env](https://github.com/ensdomains/ensjs-v3/tree/main/packages/ens-test-env/) which uses docker. We may be able to run a local test environment by running components locally in terminal windows as below*
 
-```
-# Start Hardhat Locally (seperate terminal window)
-cd /Users/john/one-wallet/ens/ens-contracts
-npx hardhat node --no-deploy
+Original Fronted [ens-app](https://github.com/ensdomains/ens-app)
 
-# Deploy Contracts locally (seperate terminal window)
+```
+# Start Hardhat Locally (terminal window 1)
+cd /Users/john/one-wallet/ens/ens-contracts
+ganachem='ganache -m "test test test test test test test test test test test junk"
+
+# Deploy Contracts locally using [harmony-deploy.js](https://github.com/harmony-domains/ens-contracts/blob/jw-harmony-build/scripts/harmony-deploy.js)(terminal window 2) use this or the deployer below NOT BOTH
+cd /Users/john/one-wallet/ens/ens-contracts
 npx hardhat run scripts/harmony-deploy.js --network localhost
+
+# Deploy contracts using [ensDeployer.ts](https://github.com/harmony-domains/ens-deployer/blob/main/contract/deploy/ensDeployer.ts) (terminal window 2) use this or the deployer above NOT BOTH
+cd /Users/john/one-wallet/ens/ens-deployer/contract 
+yarn deploy
+
 
 # Start the Frontend (separate terminal window)
 cd /Users/john/one-wallet/ens/ens-app-v3
