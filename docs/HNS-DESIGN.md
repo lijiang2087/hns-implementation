@@ -96,6 +96,37 @@ This document covers the high level development tasks to create similar function
 Original Fronted [ens-app](https://github.com/ensdomains/ens-app)
 
 ```
+# Start ganache locally (terminal window 1)
+/Users/john/one-wallet/ens/ens-deployer/env
+./ganche-new.sh
+
+# Deploy locally (terminal window 2)
+cd /Users/john/one-wallet/ens/ens-deployer/contract
+yarn deploy
+
+# Start the Frontend (separate terminal window)
+cd /Users/john/one-wallet/ens/ens-app
+
+# To start pointing to Goerli or Mainnet using ens infrastructure
+yarn start
+
+# To test locally
+
+
+
+# Runs local node with additional developer options under settings
+pnpm dev:nlocal
+
+
+# View the frontend at http://localhost:3000/
+
+
+```
+
+New Fronted [ens-app-v3](https://github.com/ensdomains/ens-app-v3)
+
+
+```
 # Start Hardhat Locally (terminal window 1)
 cd /Users/john/one-wallet/ens/ens-contracts
 ganachem='ganache -m "test test test test test test test test test test test junk"
@@ -123,7 +154,6 @@ pnpm dev:nlocal
 
 
 ```
-
 ### Testnet Deploy
 
 ## Additional Tasks
