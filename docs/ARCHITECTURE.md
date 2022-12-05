@@ -12,8 +12,14 @@
   - [Reviews](#reviews)
     - [Registry - Nomulus](#registry---nomulus)
     - [Name Servers - Criteria and CodeBases for Review](#name-servers---criteria-and-codebases-for-review)
-    - [core-dns (go)](#core-dns-go)
-    - [solana-dns (javascript)](#solana-dns-javascript)
+    - [core-dns (go) - Ranking 1](#core-dns-go---ranking-1)
+    - [trust-dns (rust) - Ranking 3](#trust-dns-rust---ranking-3)
+    - [solana-dns (javascript) - Ranking 4](#solana-dns-javascript---ranking-4)
+    - [project (language) - Ranking X](#project-language---ranking-x)
+  - [Standards](#standards)
+    - [Basic operations](#basic-operations)
+    - [Update operations](#update-operations)
+    - [Secure DNS operations](#secure-dns-operations)
 
 
 
@@ -241,7 +247,7 @@ This provides the managment of DNS entries, contact information and other techni
 - Ideally in modern languages (Golang, Rust, C++17 or later, Python, Node.js, Scala)
 - We could consider just implementing a full web3 version and store all records on smart contracts (extending ENS contracts or building our own), if this can be done in 1-2 weeks
 
-<details><summary><b>Code Bases for Review</b></summary>
+<details><summary><b>Name Server Code Bases for Review</b></summary>
 
 - https://github.com/topics/dns-server
     - [Rust](https://github.com/topics/dns-server?l=rust)
@@ -270,14 +276,14 @@ This provides the managment of DNS entries, contact information and other techni
 </details>
 
 
-### core-dns (go)
+### core-dns (go) - Ranking 1
 
 **Summary**
 [core-dns](https://github.com/coredns/coredns) is a popular repository with over 10,000 stars and 1800 forks. It has a comprehensive Plugin Approach.<sup>[1](#cd1)</sup><sup>[2](#cd2)</sup> which enables the chaining of plugins to customize logic when responding to a client request to `ServeDNS()`. "Core" Plugins have been developed by CoreDNS<sup>[3](#cd3)</sup> and also a number of specialized Plugins have been developed by third party developers<sup>[4](#cd4)</sup>
 
 Of particular relevance is the ENS Plugin<sup>[5](#cd5)</sup> which enables nameservers to retrieve information from the Ethereum Blockchain seamlessly with the existing infrastructure. This uses go-ens<sup>[6](#cd6)</sup> to interact with the ens-contracts.<sup>[7](#cd7)</sup> All repositories appear to be actively maintained with recent commits.
 
-The development approach would be to develop a harmony specific plugin for coredns leveraging the existing codebase.
+Development Approach: Develop a harmony specific plugin for coredns leveraging the existing codebase.
 
 **Evaluation Criteria**
 1. Authentication: Is currently supported by the acl-plugin<sup>[7](#cd7)</sup> which can optionally be enabled to `users are able to block or filter suspicious DNS queries by configuring IP filter rule sets, i.e. allowing authorized queries or blocking unauthorized queries.` A similar plugin could be written to enable authentication via web3.
@@ -313,11 +319,70 @@ The development approach would be to develop a harmony specific plugin for cored
 <a name="cd10">[9]</a>  [EPP Integration Approach](https://github.com/coredns/coredns/issues/131): As much as I would love to have an EPP client written in go, it isn't likely that an EPP client would be useful to many users. Only registrars typically have access to the EPP endpoints at registries. And even then, it is likely that they don't allow individual services to connect directly to the EPP endpoints since the registries impose connection count limits.
 
 
+### trust-dns (rust) - Ranking 3
+
+Summary: [trust-dns](https://github.com/bluejekyll/trust-dns): is a widely used project with 2,600 stars, 313 forks and 1077 users of the project. It is built using rust and has a modular framwork producing 8 rust crates<sup>[1](#td1)</sup> which can be used by other rust applications (similar to npm packages for javascript) as well as being able to be deployed as a standalone DNS authoritative server. It's Goals<sup>[2](#td2)</sup> focus on safety, security and simplicity. It has widespread support for Internet Engineering Task Force (IETF) Request for Comments (RFC's)<sup>[3](#td3)</sup>. 
+
+Development Approach: Deploy Standalone Version and modify the [server crate](https://github.com/bluejekyll/trust-dns/tree/main/crates/server)<sup>[1](#td1)</sup>,  to use Harmony Blockchain instead of sql-lite for [store](https://github.com/bluejekyll/trust-dns/tree/main/crates/server/src/store) functionality. Note: there are minimal ENS rust codebases<sup>[4](#td4)</sup><sup>[5](#td5)</sup><sup>[6](#td6)</sup>. Which can be reviewed for devleopment of the rust to Harmony ENS backend. Optionally a harmony-specific server crate can be published with could be used by the 1684 projects currently using trust-dns-server.
+
+**Evaluation Criteria**
+1. Authentication: 
+2. APIs: 
+3. DNS Record Type Support: Good
+4. Modern Language: Yes Rust
+5. Development TimeFrame: The development approach is fairly clear. Factors to consider is the availibility of Rust developers and the fact that there are minimal ens references to leverage.
 
 
-### solana-dns (javascript)
+**References**
 
-Summary: [solana-dns](https://github.com/Monadical-SAS/solana-dns)
+<a name="td1">[1]</a>  [Trust-DNS Crates](https://trust-dns.org/): Rust crates developed by Trust-DNS
+* [Trust-DNS](https://crates.io/crates/trust-dns): Binaries for running a DNS authoritative server.
+* [Proto](https://crates.io/crates/trust-dns-proto): trust-dns-proto Raw DNS library, exposes an unstable API and only for use by the other Trust-DNS libraries, not intended for end-user use.
+* [Client](https://crates.io/crates/trust-dns-client): trust-dns-client Used for sending query, update, and notify messages directly to a DNS server.
+* [Server](https://crates.io/crates/trust-dns-server): trust-dns-server Use to host DNS records, this also has a named binary for running in a daemon form.
+* [Resolver](https://crates.io/crates/trust-dns-resolver): trust-dns-resolver Utilizes the client library to perform DNS resolution. Can be used in place of the standard OS resolution facilities.
+* [Rustls](https://crates.io/crates/trust_dns_rustls): trust-dns-rustls Implementation of DNS over TLS protocol using the rustls and ring libraries.
+* [NativeTls](https://crates.io/crates/trust_dns_native_tls): trust-dns-native-tls Implementation of DNS over TLS protocol using the Host OS’ provided default TLS libraries
+* [OpenSsl](https://crates.io/crates/trust_dns_openssl): trust-dns-openssl Implementation of DNS over TLS protocol using OpenSSL
+
+<a name="td2">[2]</a>  [Trust-DNS Goals](https://github.com/bluejekyll/trust-dns#goals): 
+* Build a safe and secure DNS server and client with modern features.
+* No panics, all code is guarded
+* Use only safe Rust, and avoid all panics with proper Error handling
+* Use only stable Rust
+* Protect against DDOS attacks (to a degree)
+* Support options for Global Load Balancing functions
+* Make it dead simple to operate
+
+<a name="td3">[3]</a>  [Trust-DNS RFCs implemented](https://github.com/bluejekyll/trust-dns/blob/main/README.md#rfcs-implemented): A list of RFCs implemented and in progress by trust-dns.
+
+
+<a name="td4">[4]</a>  [rust ens-rainbow](https://github.com/graphprotocol/ens-rainbow): Developed by graphprotocol in 2019 is an upload utility for ens_names.sql.gz
+
+<a name="td5">[5]</a>  [rust-ens crate](https://crates.io/crates/ens): Used by ens-rainbos it is a Rust ENS(Ethereum Name Service) interface, based on rust-web3.
+
+<a name="td6">[6]</a>  [rust ens-api](https://github.com/EnormousCloud/ens-api): Ethereum Name Service RESTful API developed and last modified in December 2021.
+
+<a name="td7">[7]</a>  [trust-dns-server Dependency graph](https://github.com/bluejekyll/trust-dns/network/dependents?dependents_after=MjMwODY3NDk4MDM): Repositories that depend on trust-dns-server.
+
+### solana-dns (javascript) - Ranking 4
+
+Summary: [solana-dns](https://github.com/Monadical-SAS/solana-dns) was built more as a conceptual prototype for Solana 3 years ago by Nick Sweeting<sup>[1](#sd1)</sup>. It was never completed but has some good points<sup>[2](#sd2)</sup> to consider.
+
+**Evaluation Criteria**
+1. Authentication: No
+2. APIs: Not Fully Developed
+3. DNS Record Type Support
+4. Modern Language: Yes Javascript 
+5. Development TimeFrame: Would be long as would be building from scratch without much code that could be leveraged.
+
+
+**References**
+
+<a name="sd1">[1]</a> [Nick Sweeting Twitter](https://twitter.com/thesquashSH): Reached out to Nick regarding the status of the project and he responded with 
+> [The Project] Just stopped, it was a fun side project proposal to our friends on the solana team for a potential use case for the platform. They ended up giving us other solana work instead but thought dns was a cool idea, never got funding to do the DNS thing though. Feel free to rip off all/some/any of it, it's up for grabs if you want to build something similar! 🙂
+
+<a name="sd2">[2]</a> [How does DNS work normally?](https://github.com/Monadical-SAS/solana-dns#how-does-dns-work-normally): The repository's README.md gives an overview of the approach and potential problems. It also contains a [Data Flow](https://github.com/Monadical-SAS/solana-dns#data-flow) and [Execution Flow](https://github.com/Monadical-SAS/solana-dns#execution-flow).
 
 > **So what does Solana add to the equation?**
 >                    
@@ -337,4 +402,67 @@ Summary: [solana-dns](https://github.com/Monadical-SAS/solana-dns)
 >    - The mechanics of key issuing, rotating, and revocation need to be figured out (proper revocation is haaard, we dont want domains being lost forever to the ether because someone lost a private key)
 >                    
 > Given the power of an immutable, globally sychronized database, with key-based identity baked in, many of the distributed-systems and authentication problems that have plagued DNS in the past become drastically easier to solve. Unfortunately, designing DNS system to seamlessly augment or entirely replace existing DNS authentication mechanisms is incredibly complex. Though our ambitions are big, this project will likely have to make some decisions early on to narrow the scope and pick a few core features to focus on as a proof-of-concept.
+
+### project (language) - Ranking X
+
+Summary: [repo](link)
+
+**Evaluation Criteria**
+1. Authentication: 
+2. APIs
+3. DNS Record Type Support
+4. Modern Language: 
+5. Development TimeFrame: 
+
+
+**References**
+
+
+## Standards
+
+- [RFC 8499](https://tools.ietf.org/html/rfc8499): No more master/slave, in honor of [Juneteenth](https://en.wikipedia.org/wiki/Juneteenth)
+
+### Basic operations
+
+- [RFC 1035](https://tools.ietf.org/html/rfc1035): Base DNS spec (see the Resolver for caching)
+- [RFC 2308](https://tools.ietf.org/html/rfc2308): Negative Caching of DNS Queries (see the Resolver)
+- [RFC 2317](https://tools.ietf.org/html/rfc2317): Classless IN-ADDR.ARPA delegation
+- [RFC 2782](https://tools.ietf.org/html/rfc2782): Service location
+- [RFC 3596](https://tools.ietf.org/html/rfc3596): IPv6
+- [RFC 6891](https://tools.ietf.org/html/rfc6891): Extension Mechanisms for DNS
+- [RFC 6761](https://tools.ietf.org/html/rfc6761): Special-Use Domain Names (resolver)
+- [RFC 6762](https://tools.ietf.org/html/rfc6762): mDNS Multicast DNS (experimental feature: `mdns`)
+- [RFC 6763](https://tools.ietf.org/html/rfc6763): DNS-SD Service Discovery (experimental feature: `mdns`)
+- [RFC ANAME](https://tools.ietf.org/html/draft-ietf-dnsop-aname-02): Address-specific DNS aliases (`ANAME`)
+
+### Update operations
+
+- [RFC 1995](https://tools.ietf.org/html/rfc1995): Incremental Zone Transfer
+- [RFC 1996](https://tools.ietf.org/html/rfc1996): Notify secondaries of update
+- [RFC 2136](https://tools.ietf.org/html/rfc2136): Dynamic Update
+- [RFC 7477](https://tools.ietf.org/html/rfc7477): Child-to-Parent Synchronization in DNS
+- [Update Leases](https://tools.ietf.org/html/draft-sekar-dns-ul-01): Dynamic DNS Update Leases
+- [Long-Lived Queries](https://tools.ietf.org/html/draft-sekar-dns-llq-01): Notify with bells
+
+### Secure DNS operations
+
+- [RFC 3007](https://tools.ietf.org/html/rfc3007): Secure Dynamic Update
+- [RFC 4034](https://tools.ietf.org/html/rfc4034): DNSSEC Resource Records
+- [RFC 4035](https://tools.ietf.org/html/rfc4035): Protocol Modifications for DNSSEC
+- [RFC 4509](https://tools.ietf.org/html/rfc4509): SHA-256 in DNSSEC Delegation Signer
+- [RFC 5155](https://tools.ietf.org/html/rfc5155): DNSSEC Hashed Authenticated Denial of Existence
+- [RFC 5702](https://tools.ietf.org/html/rfc5702): SHA-2 Algorithms with RSA in DNSKEY and RRSIG for DNSSEC
+- [RFC 6844](https://tools.ietf.org/html/rfc6844): DNS Certification Authority Authorization (CAA) Resource Record
+- [RFC 6698](https://tools.ietf.org/html/rfc6698): The DNS-Based Authentication of Named Entities (DANE) Transport Layer Security (TLS) Protocol: TLSA
+- [RFC 6840](https://tools.ietf.org/html/rfc6840): Clarifications and Implementation Notes for DNSSEC
+- [RFC 6844](https://tools.ietf.org/html/rfc6844): DNS Certification Authority Authorization Resource Record
+- [RFC 6944](https://tools.ietf.org/html/rfc6944): DNSKEY Algorithm Implementation Status
+- [RFC 6975](https://tools.ietf.org/html/rfc6975): Signaling Cryptographic Algorithm Understanding
+- [RFC 7858](https://tools.ietf.org/html/rfc7858): DNS over TLS (feature: `dns-over-rustls`, `dns-over-native-tls`, or `dns-over-openssl`)
+- [RFC DoH](https://tools.ietf.org/html/draft-ietf-doh-dns-over-https-14): DNS over HTTPS, DoH (feature: `dns-over-https-rustls`)
+- [DNSCrypt](https://dnscrypt.org): Trusted DNS queries
+- [S/MIME](https://tools.ietf.org/html/draft-ietf-dane-smime-09): Domain Names For S/MIME
+
+[RFC2135](https://www.rfc-editor.org/rfc/rfc2136): Dynamic Updates in the Domain Name System (DNS UPDATE)
+
 
