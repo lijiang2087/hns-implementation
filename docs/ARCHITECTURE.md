@@ -165,9 +165,60 @@ This provides the managment of DNS entries, contact information and other techni
                              </command>
                            </epp>
                         ```
-                            
-        2. Integrate with Nomulus for Tier 2 Registration
-        3. Link to Nomulus for DNS Management etc
+
+       2. [create](https://datatracker.ietf.org/doc/html/rfc3731#section-3.2.1) using authInfo [normalizedString](https://www.w3schools.com/xml/schema_dtypes_string.asp)
+            - authInfo
+            - A <domain:authInfo> element that contains authorization information to be associated with the domain object.  This mapping includes a password-based authentication mechanism, but the schema allows new mechanisms to be defined in new schemas.
+                - existing
+                
+                ```xml
+                           <domain:authInfo>
+                             <domain:pw>2fooBAR</domain:pw>
+                           </domain:authInfo>
+                ```
+                
+                - new
+                
+                ```xml
+                <domain:authInfo>
+                    <domain:w3address>663727970746f000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</domain:w3address>
+                    <domain:w3signature>0x13407e3b6e4cb59cf12ce9f138b0528cf9d13e8cef87e954b258245ae8224e69</domain:w3signature>
+                    <domain:w3receipt>0x367fdc3a623ec216ff227a22ee863cc4aedd059ac67e07ac98016240602b1d82</domain:w3receipt>
+                </domain:authInfo>
+                ```
+                
+                - [domain-1.0.xsd](https://github.com/DK-Hostmaster/epp-xsd-files/blob/master/domain-1.0.xsd#L106) changes
+                
+                ```xml
+                <complexType name="authInfoType">
+                        <choice>
+                            <element name="pw" type="eppcom:pwAuthInfoType"/>
+                            <element name="ext" type="eppcom:extAuthInfoType"/>
+                            <element name="w3address" type="eppcom:pwAuthInfoType"/>
+                            <element name="w3signature" type="eppcom:pwAuthInfoType"/>
+                            <element name="w3receipt" type="eppcom:pwAuthInfoType"/>
+                        </choice>
+                    </complexType>
+                ```
+                
+                - [eppcom-1.0.xsd](https://github.com/DK-Hostmaster/epp-xsd-files/blob/master/eppcom-1.0.xsd#L12) changes (optional new w3authInfoType)
+                
+                ```xml
+                <complexType name="w3AuthInfoType">
+                    <simpleContent>
+                      <extension base="normalizedString">
+                      </extension>
+                    </simpleContent>
+                  </complexType>
+                ```
+                
+            - Fields
+                - wallet address
+                - signature,
+                - [web3] registration transaction receipt id
+
+        3. Integrate with Nomulus for Tier 2 Registration
+        4. Link to Nomulus for DNS Management etc
     3. Nomulus
         1. Update the DB to hold contract  addresses
             1. [database](https://github.com/google/nomulus/blob/master/db/README.md) (schema)
