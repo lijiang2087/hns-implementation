@@ -12,12 +12,14 @@
   - [Reviews](#reviews)
     - [Registry - Nomulus](#registry---nomulus)
     - [Name Servers - Criteria and CodeBases for Review](#name-servers---criteria-and-codebases-for-review)
-    - [core-dns (go) - Ranking 1](#core-dns-go---ranking-1)
-    - [trust-dns (rust) - Ranking 2](#trust-dns-rust---ranking-2)
-    - [nsd (c) - Ranking 3](#nsd-c---ranking-3)
-    - [gdnsd (c) - Ranking 4](#gdnsd-c---ranking-4)
-    - [node-dns (javascript) - Ranking 4](#node-dns-javascript---ranking-4)
-    - [solana-dns (javascript) - Ranking 5](#solana-dns-javascript---ranking-5)
+      - [Criteria](#criteria)
+      - [Summary](#summary)
+      - [core-dns (go) - Ranking 1](#core-dns-go---ranking-1)
+      - [trust-dns (rust) - Ranking 2](#trust-dns-rust---ranking-2)
+      - [nsd (c) - Ranking 3](#nsd-c---ranking-3)
+      - [gdnsd (c) - Ranking 5](#gdnsd-c---ranking-5)
+      - [node-dns (javascript) - Ranking 5](#node-dns-javascript---ranking-5)
+      - [solana-dns (javascript) - Ranking 5](#solana-dns-javascript---ranking-5)
   - [Standards](#standards)
     - [Basic operations](#basic-operations)
     - [Update operations](#update-operations)
@@ -241,7 +243,7 @@ This provides the managment of DNS entries, contact information and other techni
 
 ### Name Servers - Criteria and CodeBases for Review
 
-**Criteria**
+#### Criteria
 
 - Built-in authentication systems - we need to transform this to web3 authentication
 - Gated APIs for updating records
@@ -249,7 +251,7 @@ This provides the managment of DNS entries, contact information and other techni
 - Ideally in modern languages (Golang, Rust, C++17 or later, Python, Node.js, Scala)
 - We could consider just implementing a full web3 version and store all records on smart contracts (extending ENS contracts or building our own), if this can be done in 1-2 weeks
 
-**Summary**
+#### Summary
 A list of potential code bases for DNS Name Servers was collected and a deep dive of the top 6 eligble code bases was conducted. Inital thoughts are that [core-dns](#core-dns-go---ranking-1) is the most eligible based on it's strong adoption, the fact that it's built in go which has good support for the web3 backend and that it has a plugin architecture with a reference plugin for ENS which can be used for inspiration. [trust-dns](#trust-dns-rust---ranking-2) is currently ranked second as it is not as widely adopted, it is written in rust which has proven web3 backend integration, it can be deployed as a standalone instance or customized crates can be developed which can be leveraged by the 1600 repositories which use the trust-dns-server crate today and there exists some ENS rust integrations, though they are minimal and minimally maintained. [nsd](#nsd-c---ranking-3) was placed lower on the list as it is built in C and web3 backend integration is uncertain, also it has a BSD license which is a little stricter than the GNU, MIT and Apache Licensing. That being said it is a mature and well adopted server with extensive documentation and support and the ability to engage NnetLabs professional services to speed up development time. 
 
 The other repositories are included for completeness but currently though unviable to be used as a baseline. [gdnsd](#gdnsd-c---ranking-4) is not actively maintained and is more for querying than complete name server management. [node-dns](#node-dns-javascript---ranking-4) provides some good tools for javascript projects to interact with dns servers and could be leveraged in other applications or development but does not update domain name server functionality. [solana-dns](#solana-dns-javascript---ranking-5) was included for it's relevance for web3 backends however the project was more at the concept stage and never fully developed.
@@ -283,7 +285,7 @@ The other repositories are included for completeness but currently though unviab
 </details>
 
 
-### core-dns (go) - Ranking 1
+#### core-dns (go) - Ranking 1
 
 **Summary**
 [core-dns](https://github.com/coredns/coredns) is a popular repository with over 10,000 stars and 1800 forks. It has a comprehensive Plugin Approach.<sup>[1](#cd1)</sup><sup>[2](#cd2)</sup> which enables the chaining of plugins to customize logic when responding to a client request to `ServeDNS()`. "Core" Plugins have been developed by CoreDNS<sup>[3](#cd3)</sup> and also a number of specialized Plugins have been developed by third party developers<sup>[4](#cd4)</sup>
@@ -325,8 +327,7 @@ Development Approach: Develop a harmony specific plugin for coredns leveraging t
 
 <a name="cd10">[9]</a>  [EPP Integration Approach](https://github.com/coredns/coredns/issues/131): As much as I would love to have an EPP client written in go, it isn't likely that an EPP client would be useful to many users. Only registrars typically have access to the EPP endpoints at registries. And even then, it is likely that they don't allow individual services to connect directly to the EPP endpoints since the registries impose connection count limits.
 
-**References**
-### trust-dns (rust) - Ranking 2
+#### trust-dns (rust) - Ranking 2
 
 Summary: [trust-dns](https://github.com/bluejekyll/trust-dns): is a widely used project with 2,600 stars, 313 forks and 1077 users of the project. It is built using rust and has a modular framwork producing 8 rust crates<sup>[1](#td1)</sup> which can be used by other rust applications (similar to npm packages for javascript) as well as being able to be deployed as a standalone DNS authoritative server. It's Goals<sup>[2](#td2)</sup> focus on safety, security and simplicity. It has widespread support for Internet Engineering Task Force (IETF) Request for Comments (RFC's)<sup>[3](#td3)</sup>. 
 
@@ -373,7 +374,7 @@ Development Approach: Deploy Standalone Version and modify the [server crate](ht
 <a name="td7">[7]</a>  [trust-dns-server Dependency graph](https://github.com/bluejekyll/trust-dns/network/dependents?dependents_after=MjMwODY3NDk4MDM): Repositories that depend on trust-dns-server.
 
 
-### nsd (c) - Ranking 3
+#### nsd (c) - Ranking 3
 
 Summary: [nsd](https://github.com/NLnetLabs/nsd) is developed by NLNETLABS<sup>[1](#ns1)</sup> and is licensed under BSD 3<sup>[1](#ns1)</sup>.  It has 302 stars, 82 forks and 29 contributors and is actively maintained. They have comprehensive documentation<sup>[3](#ns3)</sup>, robust RFC compliance<sup>[4](#ns4)</sup> and offer proffesional services including training, development and support<sup>[5](#ns5)</sup>.
 
@@ -403,7 +404,7 @@ Development Approach: Modify the [server](https://github.com/NLnetLabs/nsd/blob/
 
 <a name="ns7">[7]</a>  [aleth ethereum](https://github.com/ethereum/aleth): Ethereum C++ client, tools and libraries (This project has been discontinued and is no longer maintained.)
 
-### gdnsd (c) - Ranking 4
+#### gdnsd (c) - Ranking 5
 
 Summary: [gdnsd](https://github.com/gdnsd/gdnsd) is an Authoritative-only DNS server. The initial g stands for Geographic, as gdnsd offers a plugin system for geographic (or other sorts of) balancing, redirection, and service-state-conscious failover. It is developed by gdnsd.org<sup>[1](#gd1)</sup> and has 9 contributors. The repository has 416 stars, and 65 forks. And it's users<sup>[1](#gd1)</sup> include Wikimedia foundation and Logitech.  It is licensed under the  GNU General Public License. It does not appear to be actively maintained with the last commit being Aug 13, 2021 as at Dec 5th 2022 (over a year old). It does support a plugin framework<sup>[2](#gd2)</sup>. 
 
@@ -423,7 +424,7 @@ a name="gd1">[1]</a>  [gdnsd.org](https://gdnsd.org/): Website including overvie
 
 a name="gd2">[2]</a>  [gdnsd wiki](https://github.com/gdnsd/gdnsd/wiki): Wiki including plugin docs automatically exported from the main source tree's pod sources.
 
-### node-dns (javascript) - Ranking 4
+#### node-dns (javascript) - Ranking 5
 
 Summary: [node-dns](https://github.com/song940/node-dns): Is A DNS Server and Client Implementation in Pure JavaScript with no dependencies. It has 395 stars, 54 forks, is used by 274 repos<sup>[1](#nd1)</sup>, has 15 contributors and has 4294 weekly downloads<sup>[2](#nd2)</sup>. This tool would work in conjunction with a Domain Name Server. It would be useful for javascript projects wishing to integrate with a Domain Name Server but it does not support storage of DNS records itself. The support for Internet Engineering Task Force (IETF) Request for Comments (RFC's) are query related<sup>[3](#nd3)</sup>
 
@@ -446,7 +447,7 @@ Developement Approach: Use this to integrate with Domain Name Servers.
 <a name="nd3">[3]</a>  [node-dns relevant specifications](https://github.com/song940/node-dns#relevant-specifications): support for Internet Engineering Task Force (IETF) Request for Comments (RFC's).
 
 
-### solana-dns (javascript) - Ranking 5
+#### solana-dns (javascript) - Ranking 5
 
 Summary: [solana-dns](https://github.com/Monadical-SAS/solana-dns) was built more as a conceptual prototype for Solana 3 years ago by Nick Sweeting<sup>[1](#sd1)</sup>. It was never completed but has some good points<sup>[2](#sd2)</sup> to consider.
 
