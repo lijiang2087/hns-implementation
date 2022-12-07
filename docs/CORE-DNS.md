@@ -55,6 +55,24 @@ This codebase provides a [core-dns plugin](https://coredns.io/2016/12/19/writing
 
 The inital version has been modified to leverage [hns-go].
 
+**Function Overview**
+
+An Overview of functions can be found [here](./assets/hns-go-docs.pdf) and below
+```
+type HNS
+    func (e HNS) HasRecords(domain string, name string) (bool, error)
+    func (e HNS) IsAuthoritative(domain string) bool
+    func (e HNS) Name() string
+    func (e HNS) Query(domain string, name string, qtype uint16, do bool) ([]dns.RR, error)
+    func (e HNS) Ready() bool
+    func (e HNS) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) (int, error)
+type Result
+    func Lookup(server Server, state request.Request) ([]dns.RR, []dns.RR, []dns.RR, Result)
+type Server
+Package files
+dname.go hns.go server.go setup.go wildcard.go
+```
+
 **Next Steps**
 1. Review [How to Add Plugins to CoreDNS](https://coredns.io/2017/03/01/how-to-add-plugins-to-coredns/)
 2. Update [hns.go](https://github.com/harmony-domains/coredns-hns/blob/main/hns.go) functionality to reflect updated [hns-go](#hns-go) package.
@@ -119,4 +137,5 @@ Development Approach: Develop a harmony specific plugin for coredns leveraging t
 
 <a name="cd9">[8]</a>  [A first look at CoreDNS](https://jpmens.net/2017/09/09/coredns/): Initial review of coreDNS functionality.
 
-<a name="cd10">[9]</a>  [EPP Integration Approach](https://github.com/coredns/coredns/issues/131): As much as I would love to have an EPP client written in go, it isn't likely that an EPP client would be useful to many users. Only registrars typically have access to the EPP endpoints at registries. And even then, it is likely that they don't allow individual services to connect directly to the EPP endpoints since the registries impose connection count limits.
+<a name="cd10">[9]</a>  [EPP Integration Approach](https://github.com/coredns/coredns/issues/131): 
+> As much as I would love to have an EPP client written in go, it isn't likely that an EPP client would be useful to many users. Only registrars typically have access to the EPP endpoints at registries. And even then, it is likely that they don't allow individual services to connect directly to the EPP endpoints since the registries impose connection count limits.

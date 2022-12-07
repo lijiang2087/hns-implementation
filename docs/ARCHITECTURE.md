@@ -325,7 +325,8 @@ Development Approach: Develop a harmony specific plugin for coredns leveraging t
 
 <a name="cd9">[8]</a>  [A first look at CoreDNS](https://jpmens.net/2017/09/09/coredns/): Initial review of coreDNS functionality.
 
-<a name="cd10">[9]</a>  [EPP Integration Approach](https://github.com/coredns/coredns/issues/131): As much as I would love to have an EPP client written in go, it isn't likely that an EPP client would be useful to many users. Only registrars typically have access to the EPP endpoints at registries. And even then, it is likely that they don't allow individual services to connect directly to the EPP endpoints since the registries impose connection count limits.
+<a name="cd10">[9]</a>  [EPP Integration Approach](https://github.com/coredns/coredns/issues/131): 
+> As much as I would love to have an EPP client written in go, it isn't likely that an EPP client would be useful to many users. Only registrars typically have access to the EPP endpoints at registries. And even then, it is likely that they don't allow individual services to connect directly to the EPP endpoints since the registries impose connection count limits.
 
 #### trust-dns (rust) - Ranking 2
 
