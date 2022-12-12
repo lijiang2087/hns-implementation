@@ -1,4 +1,4 @@
-# Harmony Name Service Design Document
+# ONE Name Service Design Document
 This document covers the high level development tasks to create similar functionality as [ens.domains](https://ens.domains/) for [Harmony](https://www.harmony.one/).
 
 *Note: This project is separate from [hnsdomains](https://github.com/hnsdomains) which was a Harmony community lead project.*
